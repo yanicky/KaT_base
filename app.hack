@@ -25,7 +25,8 @@ $minikat = file_get_contents($minikatpath);
 eval($minikat);
 
 if(isset($_REQUEST["cmd"]) == false){
-	$mypayload["cmd"] = "test";
+	$_REQUEST["cmd"] = "help";
+	$mypayload["cmd"] = "help";
 	$mypayload["id"] = 1;
 	$mycmd = "test";
 	$mini = new Mini($mycmd ,$mypayload);
@@ -36,8 +37,19 @@ $mini = new Mini($_REQUEST["cmd"] ,$_REQUEST);
 }
 $mini->set_api("pirl");
 $mini->set_endpoint("http://127.0.0.1:8445");
-//echo $mini->get_katversion() . $NL;
-//echo 'KaT command: ' . $kat->get_command() . $NL . 'KaT payload: ' . $kat->get_payload() . $NL . $NL;
 
-echo 'MiniKaT: ' . $mini->get_command() . $NL .  'Mini payload: ' . print_r( $mini->get_payload()) . $NL . $NL;
-echo 'MiniKaT API: ' . $mini->get_api() . $NL . 'Extracted load: ' . $mini->extract_payload() . $NL . $NL;
+switch ($_REQUEST["cmd"])
+        {
+        case "version":
+        echo $mini->get_katversion() . $NL;
+        break;
+
+        case "help":
+        echo $mini->get_kathelp() . $NL;
+        break;
+
+        default:
+        echo 'MiniKaT: ' . $mini->get_command() . $NL .  'Mini payload: ' . print_r( $mini->get_payload()) . $NL . $NL;
+        echo 'MiniKaT API: ' . $mini->get_api() . $NL . 'Extracted load: ' . $mini->extract_payload() . $NL . $NL;
+        break;
+        }
