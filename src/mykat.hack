@@ -2,10 +2,15 @@ class KaT
 {
     private $command;
     private $payload;
+    private $KaT_VERSION = "3.0";
     public function __construct($command, $payload)
     {
         $this->command = $command;
         $this->payload = $payload;
+    }
+    public function get_katversion()
+    {
+	return $this->KaT_VERSION;
     }
     public function get_command()
     {
@@ -23,4 +28,10 @@ class KaT
     {
         $this->payload = $payload;
     }
+    public function extract_payload()
+    {
+        $load = $this->payload;
+        return $load["cmd"];
+    }
+
 }
