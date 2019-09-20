@@ -4,12 +4,14 @@ foreach( $argv as $argument ) {
 
         $pair = explode( "=", $argument );
         $variableName = substr( $pair[ 0 ], 2 );
+        if(isset($pair[ 1 ])){
         $variableValue = $pair[ 1 ];
         //echo $variableName . " = " . $variableValue . "\n";
         // Store the variable in $_REQUEST
         $_REQUEST[ $variableName ] = $variableValue;
-        
+        }
 }
+
 
 if ($argc > 0) {$NL = "\n"; $RUNMODE = "cli";} else {$NL = "</br>"; $RUNMODE = "webserv";}
 // echo getcwd() . $NL;
