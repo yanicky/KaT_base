@@ -28,6 +28,7 @@ if(isset($_REQUEST["cmd"]) == false){
 	$_REQUEST["cmd"] = "help";
 	$mypayload["cmd"] = "help";
 	$mypayload["id"] = 1;
+	$_REQUEST["id"] = 1;
 	$mycmd = "test";
 	$mini = new Mini($mycmd ,$mypayload);
 	}
@@ -36,7 +37,13 @@ else
 $mini = new Mini($_REQUEST["cmd"] ,$_REQUEST);
 }
 $mini->set_api("pirl");
-$mini->set_endpoint("http://127.0.0.1:8445");
+$mini->set_endpoint("https://wallrpc.pirl.io");
+
+if(isset($_REQUEST["id"]) == false){
+$mini->set_id(1);
+} else {
+$mini->set_id($_REQUEST["id"]);
+}
 
 switch ($_REQUEST["cmd"])
         {
@@ -46,6 +53,16 @@ switch ($_REQUEST["cmd"])
 
         case "help":
         echo $mini->get_kathelp() . $NL;
+        break;
+
+	case "net_peercount":
+	// echo $mini->get_id() . $NL;
+	echo $mini->net_peercount($mini->get_endpoint(), $mini->get_id());
+	break;
+
+	case "eth_blockNumber":
+        // echo $mini->get_id() . $NL;
+        echo $mini->eth_blockNumber($mini->get_endpoint(), $mini->get_id());
         break;
 
         default:
