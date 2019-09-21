@@ -36,13 +36,45 @@ else
 	{
 $mini = new Mini($_REQUEST["cmd"] ,$_REQUEST);
 }
+
+
+if(isset($_REQUEST["api"]) == false){
 $mini->set_api("pirl");
-$mini->set_endpoint("https://wallrpc.pirl.io");
+} else {
+$mini->set_api($_REQUEST["api"]);
+}
+
+if(isset($_REQUEST["endpoint"]) == false){
+	switch($mini->get_api()){
+	case "pirl":
+	$mini->set_endpoint("https://wallrpc.pirl.io");
+	break;
+
+	case "ethereum":
+	$mini->set_endpoint("https://cloudflare-eth.com");
+	break;
+	
+	case "ganache":
+	$mini->set_endpoint("http://127.0.0.1:7545");
+	break;
+	
+	default:
+	$mini->set_endpoint("https://wallrpc.pirl.io");
+	break;
+	}
+} else {
+$mini->set_endpoint($_REQUEST["endpoint"]);
+}
 
 if(isset($_REQUEST["id"]) == false){
 $mini->set_id(1);
 } else {
 $mini->set_id($_REQUEST["id"]);
+}
+if(isset( $_REQUEST["wallet"]) == false ) {
+$wallet = "0x256b2b26Fe8eCAd201103946F8C603b401cE16EC";
+}else {
+$wallet = $_REQUEST["wallet"];
 }
 
 switch ($_REQUEST["cmd"])
@@ -55,14 +87,48 @@ switch ($_REQUEST["cmd"])
         echo $mini->get_kathelp() . $NL;
         break;
 
+	case "web3_clientVersion":
+        echo $mini->Web3_clientVersion($mini->get_endpoint(), $mini->get_id());
+        break;
+	
+	case "net_version":
+        echo $mini->net_version($mini->get_endpoint(), $mini->get_id());
+        break;
+
 	case "net_peercount":
-	// echo $mini->get_id() . $NL;
 	echo $mini->net_peercount($mini->get_endpoint(), $mini->get_id());
 	break;
 
 	case "eth_blockNumber":
-        // echo $mini->get_id() . $NL;
         echo $mini->eth_blockNumber($mini->get_endpoint(), $mini->get_id());
+        break;
+
+	case "eth_getBlockByNumber":
+        echo $mini->eth_getBlockByNumber($mini->get_endpoint(), $mini->get_id(), $_REQUEST["block"]);
+        break;
+
+	case "eth_getBlockByHash":
+        echo $mini->eth_getBlockByHash($mini->get_endpoint(), $mini->get_id(), $_REQUEST["block"]);
+        break;
+
+	case "eth_getBalance":
+	if ($wallet == "" ) {echo "url should be in format 'http(s)://hostname/path/to/index.php?wallet=youraddresshere' or using --wallet=yourwallethere from hhvm-cli"  . $NL; exit;}
+        else{
+	if ( strlen($wallet) != "42" ) { echo "wallet should be 42 char, including the 0x beginning" . $NL; exit;}else{
+
+	echo $mini->eth_getBalance($mini->get_endpoint(), $mini->get_id(), $wallet);
+		}
+        }
+	break;
+
+	case "eth_getDecodedBalance":
+        if ($wallet == "" ) {echo "url should be in format 'http(s)://hostname/path/to/index.php?wallet=youraddresshere' or using --wallet=yourwallethere from hhvm-cli"  . $NL; exit;}
+        else{
+        if ( strlen($wallet) != "42" ) { echo "wallet should be 42 char, including the 0x beginning" . $NL; exit;}else{
+
+        echo $mini->eth_getDecodedBalance($mini->get_endpoint(), $mini->get_id(), $wallet);
+                }
+        }
         break;
 
         default:
