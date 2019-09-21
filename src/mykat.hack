@@ -12,6 +12,10 @@ class KaT
     {
 	return $this->KaT_VERSION;
     }
+    public function get_kathelp()
+    {
+        return "Please use --cmd=howto";
+    }
     public function get_command()
     {
         return $this->command;
