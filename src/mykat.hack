@@ -2,6 +2,7 @@ class KaT
 {
     private $command;
     private $payload;
+    private $newline;
     private $KaT_VERSION = "3.0";
     public function __construct($command, $payload)
     {
@@ -36,6 +37,20 @@ class KaT
     {
         $load = $this->payload;
         return $load["cmd"];
+    }
+
+    public function set_newline($runmode)
+    {
+    if($runmode == "cli"){
+        $newline   = "\n";
+        } else {
+        $newline = "</br>";
+        }
+     $this->newline = $newline;
+    }
+    public function get_newline()
+    {
+     return $this->newline;
     }
     public function jsonCurl($myurl, $mymethod, $mypayload) 
     {
