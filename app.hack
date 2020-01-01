@@ -85,6 +85,10 @@ switch ($_REQUEST["cmd"])
         echo $mini->get_kathelp() . $NL;
         break;
 
+	case "howto":
+        echo $mini->get_kathowto() . $NL;
+        break;
+
 	case "web3_clientVersion":
         echo $mini->Web3_clientVersion($mini->get_endpoint(), $mini->get_id());
         break;
