@@ -17,6 +17,11 @@ class KaT
     {
         return "Please use --cmd=howto";
     }
+    public function get_kathowto()
+    {
+        $howto = file_get_contents('https://raw.githubusercontent.com/yanicky/KaT_base/master/HOWTO.md');
+        return $howto;
+    }
     public function get_command()
     {
         return $this->command;
